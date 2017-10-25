@@ -85,8 +85,8 @@ contract Kwh is ERC20, LoggingErrors {
     external
     returns (bool)
   {
-    if (msg.sender != owner_ && msg.sender != hub_)
-      return error('msg.sender != owner, Token.mint()');
+    if (!activePrograms_[msg.sender])
+      return error('msg.sender not an active program, Token.mint()');
 
     if (_value <= 0)
       return error('Cannot mint a value of <= 0, Token.mint()');
