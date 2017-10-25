@@ -81,7 +81,7 @@ contract Kwh is ERC20, LoggingErrors {
    * @param _value The amount of tokens to be minted and transferred.
    * @return Success of the transaction.
    */
-  function mint (address _to, uint _value)
+  function mint(address _to, uint _value)
     external
     returns (bool)
   {
