@@ -8,6 +8,8 @@ contract ERC20 {
   /// @return The balance
   function balanceOf(address _owner) external constant returns (uint256 balance) {}
 
+  function mint (address _to, uint _value) external returns (bool) {}
+
   /// @notice send `_value` token to `_to` from `msg.sender`
   /// @param _to The address of the recipient
   /// @param _value The amount of token to be transferred
