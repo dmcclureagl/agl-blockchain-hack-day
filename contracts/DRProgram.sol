@@ -41,23 +41,28 @@ contract DRProgram {
         * TODO
           Check that the claim is valid!
         */
-        Contract storage eventContract = activeContracts_[_id];
+        Contract memory eventContract = activeContracts_[_id];
   
         // Check if the event is active.
         if (eventContract.active) {
             uint rewardAmount = (REWARD_AMOUNT * _energyReduction);
-            // Check if the startTime + duration ism't less than the current time.
+          
+            // Check if the startTime + duration isn't less than the current time.
             if (eventContract.startTime + eventContract.duration > block.timestamp) {
                 // Set the contract to be inactive once the above check has been completed.
                 // This is to make sure it can't repeat the same claimRewards()
                 eventContract.active = false;
+            } else {
+                eventContract.paidOut = eventContract.paidOut.add(rewardAmount);
+                require(Kwh(rewardsToken_).mint(msg.sender, rewardAmount));
 
                 // Check if the paidout + reward amount is less than maxPayout.
-                if (eventContract.paidOut + rewardAmount < eventContract.maxPayout) {
-                    eventContract.paidOut = eventContract.paidOut.add(rewardAmount);
-                    require(Kwh(rewardsToken_).mint(msg.sender, rewardAmount));
+                if (eventContract.paidOut + rewardAmount >= eventContract.maxPayout) {
+                    eventContract.active = false;
                 }
             }
+            // Write to storage
+            activeContracts_[_id] = eventContract;
         }
         
     }
