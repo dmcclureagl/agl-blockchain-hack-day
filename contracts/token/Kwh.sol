@@ -43,9 +43,9 @@ contract Kwh is ERC20, LoggingErrors {
   event LogTokensMinted(address indexed _to, address to, uint256 value, uint256 totalSupply);
 
   /**
-   * @dev CONSTRUCTOR - set blg owner account
+   * @dev CONSTRUCTOR
    */
-  function Token() {
+  function Kwh() {
     owner_ = msg.sender;
   }
 
