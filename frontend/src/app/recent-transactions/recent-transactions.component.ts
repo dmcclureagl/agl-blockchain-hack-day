@@ -36,9 +36,9 @@ export class RecentTransactionsComponent implements OnInit {
   }
 
   private pushTransactions(event) {
-    if (this.transactions.length >= 4) {
+    if (this.transactions.length >= 7) {
       // Keep trimmed to 4 items
-      this.transactions = this.transactions.slice(Math.max(this.transactions.length - 4, 1));
+      this.transactions = this.transactions.slice(Math.max(this.transactions.length - 7, 1));
     } else {
       // Add till we have 4 items in the array
       this.transactions.push(event);
