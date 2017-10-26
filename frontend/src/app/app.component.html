@@ -2,7 +2,19 @@
   <img src="assets/white_logo.png" alt="AGL Logo"/>
 </div>
 
-<mat-card class="card-demo">
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="30px"
+     fxLayoutGap.xs="0">
+  <div class="item" fxFlex><agl-notifications></agl-notifications></div>
+  <div class="item" fxFlex><agl-recent-transactions></agl-recent-transactions></div>
+  <div class="item" fxFlex><agl-current-balance></agl-current-balance></div>
+</div>
+
+
+<!--<mat-card class="card-demo">
   <mat-card-title>Responsive Layout Directions</mat-card-title>
   <mat-card-subtitle>Layout direction changes to 'column' for 'xs' or 'sm' viewport sizes:
   </mat-card-subtitle>
@@ -114,6 +126,6 @@
       </div>
     </div>
   </mat-card-content>
-</mat-card>
+</mat-card>-->
 
 <router-outlet></router-outlet>
