@@ -12,6 +12,7 @@ export class BlockchainService {
 
   public currentBalance = 0;
   public symbol: string;
+  public tokensMined;
   public defaultAccount;
   public web3;
   public DRPcontract;
@@ -19,6 +20,9 @@ export class BlockchainService {
 
   public updateCurrentBalance = new Subject<number>();
   public currentBalanceUpdated = this.updateCurrentBalance.asObservable();
+
+  public updateTokensAquired = new Subject<number>(); 
+  public updateTokensUpdated = this.updateTokensAquired.asObservable();
 
   public updateRecentTransactions = new Subject<number>();
   public transactionsUpdated = this.updateRecentTransactions.asObservable();
@@ -64,7 +68,9 @@ export class BlockchainService {
     this.kwhContract.LogTokensMinted({from: 'latestBlock', to: 'latestBlock'}).watch((err, res) => {
       if (res.args.to === owner) {
         this.currentBalance = this.kwhContract.balanceOf(owner).toNumber();
+        this.tokensMined = res.args.value.toNumber();
         this.updateCurrentBalance.next(this.currentBalance);
+        this.updateTokensAquired.next(this.tokensMined);
       }
 
       if (err) {

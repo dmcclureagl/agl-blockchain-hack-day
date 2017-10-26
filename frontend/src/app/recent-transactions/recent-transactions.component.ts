@@ -12,7 +12,11 @@ export class RecentTransactionsComponent implements OnInit {
 
   ngOnInit() {
     this.blockchainService.updateRecentTransactions.subscribe((res) => {
-      this.transactions.push({ event: 'Contract Added', time: new Date()});
+      this.transactions.push({ event: 'Contract Added', time: new Date() });
+    });
+
+    this.blockchainService.updateTokensUpdated.subscribe(() => {
+      this.transactions.push({ event: `You've earned ${this.blockchainService.tokensMined} ${this.blockchainService.symbol}!` });
     });
   }
 
