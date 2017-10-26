@@ -1,9 +1,11 @@
 pragma solidity ^0.4.15;
 
 import './token/Kwh.sol';
+import './utils/SafeMath.sol';
 
 
 contract DRProgram {
+    using SafeMath for uint256;
     uint public constant REWARD_AMOUNT = 1;
     address public rewardsToken_;
 
@@ -39,12 +41,22 @@ contract DRProgram {
         * TODO
           Check that the claim is valid!
         */
-        Contract eventContract = activeContracts_[_id];
+        Contract storage eventContract = activeContracts_[_id];
   
+        // Check if the event is active.
         if (eventContract.active) {
+            uint rewardAmount = (REWARD_AMOUNT * _energyReduction);
+            // Check if the startTime + duration ism't less than the current time.
             if (eventContract.startTime + eventContract.duration > block.timestamp) {
-                eventContract.paidOut = eventContract.paidOut.add(REWARD_AMOUNT * _energyReduction);
-                require(Kwh(rewardsToken_).mint(msg.sender, REWARD_AMOUNT * _energyReduction));
+                // Set the contract to be inactive once the above check has been completed.
+                // This is to make sure it can't repeat the same claimRewards()
+                eventContract.active = false;
+
+                // Check if the paidout + reward amount is less than maxPayout.
+                if (eventContract.paidOut + rewardAmount < eventContract.maxPayout) {
+                    eventContract.paidOut = eventContract.paidOut.add(rewardAmount);
+                    require(Kwh(rewardsToken_).mint(msg.sender, rewardAmount));
+                }
             }
         }
         
@@ -53,7 +65,13 @@ contract DRProgram {
     function addContract(uint256 _duration, uint256 _maxPayout, uint256 _nonce) external {
         bytes32 id = keccak256(_duration, _maxPayout, _nonce);
 
-        activeContracts_[id] = Contract(true, _duration, 0, _maxPayout, block.timestamp);
+        activeContracts_[id] = Contract(
+            true,
+            _duration,
+            0,
+            _maxPayout,
+            block.timestamp
+        );
     }
 
     /**
