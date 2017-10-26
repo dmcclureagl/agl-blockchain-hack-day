@@ -9,6 +9,9 @@ import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// Services
+import { BlockchainService } from './blockchain.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -20,7 +23,9 @@ import { AppComponent } from './app.component';
     MaterialModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [
+    BlockchainService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

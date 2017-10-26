@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BlockchainService } from './blockchain.service';
 
 @Component({
   selector: 'agl-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'agl';
+  constructor(private blockchainService: BlockchainService) {
+    // console.log(this.blockchainService.DRProgramJson);
+  }
 }
