@@ -16,11 +16,11 @@ contract DRProgram {
    * Enter more information when complete.
    */
   struct Contract {
-      bool active;
-      uint256 duration;
-      uint256 paidOut;
-      uint256 maxPayout;
-      uint256 startTime;
+    bool active;
+    uint256 duration;
+    uint256 paidOut;
+    uint256 maxPayout;
+    uint256 startTime;
   }
 
   /**
@@ -33,15 +33,15 @@ contract DRProgram {
   /**
    * Events
    */
-  LogContractAdded(bytes32 id);
-  LogRewardsClaimed(bytes32 contractId, address user);
+  event LogContractAdded(bytes32 id);
+  event LogRewardsClaimed(bytes32 contractId, address user);
 
   /**
   * Set the address of the proram reward token upon deployment
   * @param _kwh The kwh token contract.
   */
   function DRProgram(address _kwh) {
-      rewardsToken_ = _kwh;
+    rewardsToken_ = _kwh;
   }
 
   /**
@@ -54,7 +54,8 @@ contract DRProgram {
   function claimRewards(
     bytes32 _id,
     uint256 _energyReduction
-  ) external {
+    ) external
+    {
     /**
      * TODO
      * Check that the claim is valid!
@@ -99,7 +100,7 @@ contract DRProgram {
     activeContracts_[id] = Contract({
         active: true,
         duration: _duration,
-        paidAout: 0,
+        paidOut: 0,
         maxPayout: _maxPayout,
         startTime: block.timestamp
     });

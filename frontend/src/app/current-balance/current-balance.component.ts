@@ -1,3 +1,4 @@
+import { BlockchainService } from '../blockchain.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CurrentBalanceComponent implements OnInit {
 
-  constructor() { }
+  public balance: number;
+
+  constructor(private blockchainService: BlockchainService) {
+    this.balance = this.blockchainService.currentBalance;
+  }
 
   ngOnInit() {
+    this.updateBalance(30);
+  }
+
+  public updateBalance(amount: number) {
+    this.blockchainService.currentBalance = amount;
+    this.balance = amount;
   }
 
 }
