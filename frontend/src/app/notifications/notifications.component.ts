@@ -1,3 +1,4 @@
+import { BlockchainService } from '../blockchain.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private blockchainService: BlockchainService) { }
 
   ngOnInit() {
+
   }
 
 }

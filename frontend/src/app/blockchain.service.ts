@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
+import { Subject }    from 'rxjs/Subject';
 import Web3 from 'web3';
 
 import * as kwhJson from '../../../build/contracts/Kwh.json';
@@ -11,9 +11,17 @@ export class BlockchainService {
   public DRProgramAddress = '0x6b180277375346da70bc9d16249e5d117e4ee38a';
 
   public currentBalance = 0;
+  public symbol: string;
+  public defaultAccount;
   public web3;
   public DRPcontract;
   public kwhContract;
+
+  public updateCurrentBalance = new Subject<number>();
+  public currentBalanceUpdated = this.updateCurrentBalance.asObservable();
+
+  public updateRecentTransactions = new Subject<number>();
+  public transactionsUpdated = this.updateRecentTransactions.asObservable();
 
   constructor() {
     this.initEtherConnection();
@@ -23,13 +31,7 @@ export class BlockchainService {
     this.web3 = new Web3(
       new Web3.providers.HttpProvider('http://localhost:8545')
     )
-
-    let defaultAccount = this.web3.eth.accounts[0];
-
-    // Quick check that web3 connection successful
-    console.log(`web3 Connected? ${this.web3.isConnected()}`)
-    console.log(`Default Account: ${defaultAccount}`)
-
+    this.defaultAccount = this.web3.eth.accounts[0];
     this.web3Connection();
   }
 
@@ -42,12 +44,15 @@ export class BlockchainService {
     this.kwhContract = this.web3.eth.contract(kwhAbi).at(this.kwhAddress);
 
     // The balance
-    console.log('Balance', this.kwhContract.balanceOf(owner));
+    this.currentBalance = this.kwhContract.balanceOf(owner).toNumber();
+
+    // The Symbol
+    this.symbol = this.kwhContract.symbol();
 
     // The event when we add it
     this.DRPcontract.LogContractAdded({from: 'latestBlock', to: 'latestBlock'}).watch((err, res) => {
       if (res) {
-        // do UI
+        this.updateRecentTransactions.next(res);
       }
     
       if (err) {
@@ -58,7 +63,8 @@ export class BlockchainService {
     // When they earn kWh
     this.kwhContract.LogTokensMinted({from: 'latestBlock', to: 'latestBlock'}).watch((err, res) => {
       if (res.args.to === owner) {
-        console.log('LogTokensMinted', res);
+        this.currentBalance = this.kwhContract.balanceOf(owner).toNumber();
+        this.updateCurrentBalance.next(this.currentBalance);
       }
 
       if (err) {

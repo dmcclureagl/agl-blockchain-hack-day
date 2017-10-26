@@ -1,3 +1,4 @@
+import { BlockchainService } from '../blockchain.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./recent-transactions.component.scss']
 })
 export class RecentTransactionsComponent implements OnInit {
-
-  constructor() { }
+  public transactions = [];
+  constructor(private blockchainService: BlockchainService) { }
 
   ngOnInit() {
+    this.blockchainService.updateRecentTransactions.subscribe((res) => {
+      this.transactions.push('Contract Added');
+    });
   }
 
 }

@@ -1,6 +1,8 @@
 <mat-card class="card-demo">
   <mat-card-title>Recent Transactions</mat-card-title>
   <mat-card-content>
-    <div>List all recent transactions</div>
+    <ul>
+      <li *ngFor="let item of transactions">{{item.event}} {{item.time}}</li>
+    </ul>
   </mat-card-content>
 </mat-card>
