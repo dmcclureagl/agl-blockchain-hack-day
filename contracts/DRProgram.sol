@@ -41,7 +41,7 @@ contract DRProgram {
         * TODO
           Check that the claim is valid!
         */
-        Contract storage eventContract = activeContracts_[_id];
+        Contract memory eventContract = activeContracts_[_id];
 
         // Check if the event is active.
         if (eventContract.active) {
