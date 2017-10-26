@@ -11,10 +11,16 @@ import { AppComponent } from './app.component';
 
 // Services
 import { BlockchainService } from './blockchain.service';
+import { CurrentBalanceComponent } from './current-balance/current-balance.component';
+import { RecentTransactionsComponent } from './recent-transactions/recent-transactions.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CurrentBalanceComponent,
+    RecentTransactionsComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
