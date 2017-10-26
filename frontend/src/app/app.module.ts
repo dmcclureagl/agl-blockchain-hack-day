@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material/material.module';
+import { MomentModule } from 'angular2-moment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,7 +13,7 @@ import { AppComponent } from './app.component';
 // Services
 import { BlockchainService } from './blockchain.service';
 import { CurrentBalanceComponent } from './current-balance/current-balance.component';
-import { RecentTransactionsComponent } from './recent-transactions/recent-transactions.component';
+import { RecentTransactionsComponent, AglNotificationDialog } from './recent-transactions/recent-transactions.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
@@ -20,17 +21,22 @@ import { NotificationsComponent } from './notifications/notifications.component'
     AppComponent,
     CurrentBalanceComponent,
     RecentTransactionsComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    AglNotificationDialog
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MomentModule
   ],
   providers: [
     BlockchainService
+  ],
+  entryComponents: [
+    AglNotificationDialog
   ],
   bootstrap: [AppComponent]
 })

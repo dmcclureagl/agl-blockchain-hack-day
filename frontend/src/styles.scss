@@ -16,3 +16,13 @@ mat-form-field {
     font-size: 16px;
     font-family: Open+Sans, 'Helvetica Neue', sans-serif;
 }
+
+.highLightMeMore {
+    background: #001cb0;
+    .mat-simple-snackbar-action {
+        color: white;
+        font-weight: bold;
+        border: 1px solid #f0f0f0;
+        border-radius: 4px;
+    }
+}
