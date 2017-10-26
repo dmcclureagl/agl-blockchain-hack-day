@@ -20,7 +20,7 @@ async function addContracts() {
 
     token = await drProgram.deployed();
 
-    energyReduction = Math.floor((Math.random() * 100) + 1)
+    energyReduction = Math.floor((Math.random() * 20) + 1)
     duration = Math.floor((Math.random() * 10000000000000) + 10000000)
     maxPayout = Math.floor((Math.random() * 1000) + 10)
     console.log('\n\nEnergy Reduction: ' + energyReduction)
@@ -29,7 +29,7 @@ async function addContracts() {
     await addContractAndClaimReward(nonce++, duration, maxPayout, energyReduction)
 
     setInterval(async () => {
-      energyReduction = Math.floor((Math.random() * 100) + 1)
+      energyReduction = Math.floor((Math.random() * 20) + 1)
       duration = Math.floor((Math.random() * 10000000000000) + 10000000)
       maxPayout = Math.floor((Math.random() * 1000) + 10)
       console.log('\n\nEnergy Reduction: ' + energyReduction)
