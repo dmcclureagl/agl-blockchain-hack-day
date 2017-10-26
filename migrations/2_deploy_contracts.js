@@ -5,5 +5,11 @@ const owner = web3.eth.accounts[0]
 module.exports = deployer => {
   deployer.deploy(Kwh, { from: owner, gas: 4e6 }).then(() => {
     return deployer.deploy(DRProgram, Kwh.address, { from: owner, gas: 4e6 })
+
+  }).then(dpProgram => {
+    return Kwh.deployed()
+
+  }).then(kwh => {
+    return kwh.addDRProgram(DRProgram.address, { from: owner })
   })
 }

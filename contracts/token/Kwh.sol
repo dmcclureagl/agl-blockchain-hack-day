@@ -76,6 +76,28 @@ contract Kwh is ERC20, LoggingErrors {
   }
 
   /**
+   * @dev Set the address of the DR Program contract.  This will be used to allow the program
+   * to mint tokens.
+   * @param _program The profram contract address.
+   * @return Success of the transaction.
+   */
+  function addDRProgram(
+    address _program
+  ) external
+    returns (bool)
+  {
+    if (msg.sender != owner_)
+      return error('msg.sender != owner, Token.addDRProgram()');
+
+    if (_program == address(0))
+      return error('Invalid program address, program == address(0), Token.addDRProgram()');
+
+    activePrograms_[_program] = true;
+
+    return true;
+  }
+
+  /**
    * @dev Mint tokens and allocate them to the specified user.
    * @param _to The address of the recipient.
    * @param _value The amount of tokens to be minted and transferred.
@@ -102,28 +124,6 @@ contract Kwh is ERC20, LoggingErrors {
 
     return true;
   }
-
-  /**
-  * @dev Set the address of the DR Program contract.  This will be used to allow the program
-  * to mint tokens.
-  * @param _program The profram contract address.
-  * @return Success of the transaction.
-  */
- function addDRProgram (
-   address _program
- ) external
-   returns (bool)
- {
-   if (msg.sender != owner_)
-     return error('msg.sender != owner, Token.addDRProgram()');
-
-   if (_program == address(0))
-     return error('Invalid program address, program == address(0), Token.addDRProgram()');
-
-   activePrograms_[_program] = true;
-
-   return true;
- }
 
   /**
    * @dev send `_value` token to `_to` from `msg.sender`

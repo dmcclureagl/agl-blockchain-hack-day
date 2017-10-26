@@ -1,5 +1,7 @@
 const Kwh = artifacts.require("./Kwh.sol")
 const DRProgram = artifacts.require("./DRProgram.sol")
+const ethUtil = require('ethereumjs-util');
+const ethABI = require('ethereumjs-abi');
 let callResponse
 let txResponse
 let token
@@ -7,40 +9,38 @@ let token
 contract('DRProgram Token Rewards', accounts => {
   const owner = accounts[0]
   const user1 = accounts[1]
+  let nonce = 0
 
   it("create a new energy contract.", async () => {
     kwh = await Kwh.new({ from: owner })
     drProgram = await DRProgram.new(kwh.address, { from: owner })
+    await kwh.addDRProgram(drProgram.address, { from: owner })
 
-    console.log(drProgram)
+    // Confirm deployed contracts functioning correctly
+    // drProgram = await DRProgram.deployed()
+    // kwh = await Kwh.deployed()
 
     // Add a new contract
-    let duration = 1000
+    let duration = 10000000
     let maxPayout = 1000
+    const contractParts = [
+      { value: duration, type: 'uint256' },
+      { value: maxPayout, type: 'uint256' },
+      { value: nonce, type: 'uint256' },
+    ]
 
-    drProgram.addContract()
+    const types = contractParts.map(o => o.type);
+    const values = contractParts.map(o => o.value);
+    const hashBuff = ethABI.soliditySHA3(types, values);
+    const programId = ethUtil.bufferToHex(hashBuff);
+    await drProgram.addContract(duration, maxPayout, nonce++)
+    const program = await drProgram.activeContracts_(programId)
 
-    // let value = 1
+    // Make a claim
+    let energyReduction = 10
+    await drProgram.claimRewards(programId, energyReduction, { from: user1 })
 
-    // callResponse = await token.mint.call(user1, value, { from: owner })
-    // txResponse = await token.mint(user1, value, { from: owner })
-
-    // // Assert after tx so we can see the emitted logs in the case of failure.
-    // assert(callResponse, 'Call response was not true.')
-
-    // // Event emission
-    // const eventLog = txResponse.logs[0]
-    // assert.equal(eventLog.event, 'LogTokensMinted', 'LogTokensMinted event was not emitted.')
-    // assert.equal(eventLog.args.to, user1, 'Incorrect to was emitted.')
-    // assert.equal(eventLog.args.value, value, 'Incorrect value was emitted.')
-    // assert.equal(eventLog.args.totalSupply, value, 'Incorrect totalSupply was emitted.')
-
-    // // Balance
-    // const balance = await token.balanceOf.call(user1)
-    // assert.equal(balance.toNumber(), value, 'Incorrect user token balance.')
-
-    // // Total Supply
-    // const supply = await token.totalSupply.call()
-    // assert.equal(supply.toNumber(), value, 'Incorrect total supply balance.')
+    const userBalance = await kwh.balanceOf(user1)
+    assert.equal(userBalance.toNumber(), 10, 'User balance not updated')
   })
 })

@@ -21,8 +21,8 @@ contract DRProgram {
         uint256 startTime;
     }
 
-    mapping(bytes32 => Contract) activeContracts_;
-    mapping(address => bytes32) claimsMade_;
+    mapping(bytes32 => Contract) public activeContracts_;
+    mapping(address => bytes32) public claimsMade_;
 
     /**
     * Set the address of the proram reward token upon deployment
@@ -42,7 +42,7 @@ contract DRProgram {
           Check that the claim is valid!
         */
         Contract storage eventContract = activeContracts_[_id];
-  
+
         // Check if the event is active.
         if (eventContract.active) {
             uint rewardAmount = (REWARD_AMOUNT * _energyReduction);
@@ -59,7 +59,6 @@ contract DRProgram {
                 }
             }
         }
-        
     }
 
     function addContract(uint256 _duration, uint256 _maxPayout, uint256 _nonce) external {
