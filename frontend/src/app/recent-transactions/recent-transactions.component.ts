@@ -51,7 +51,7 @@ export class RecentTransactionsComponent implements OnInit {
   selector: 'agl-notification-dialog',
   template: `
     <div md-dialog-content>
-      <h1>TODO: Event Title</h1>
+      <h1>Event in progress</h1>
       <p>Earn KWH right now by reducing your energy.<p>
       <span>Reducing energy tips</span>
       <ul>

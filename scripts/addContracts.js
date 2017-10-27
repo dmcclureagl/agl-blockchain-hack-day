@@ -36,7 +36,7 @@ async function addContracts() {
       console.log('Duration: ' + duration)
       console.log('Max Payout: ' + maxPayout)
       await addContractAndClaimReward(nonce++, duration, maxPayout, energyReduction)
-    }, Math.floor((Math.random() * 1200000) + 60000));
+    }, Math.floor((Math.random() * 90000) + 60000));
 }
 
 async function addContractAndClaimReward(nonce, duration, maxPayout, energyReduction) {
