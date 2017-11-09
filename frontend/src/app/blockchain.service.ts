@@ -7,8 +7,8 @@ import * as DRProgramJson from '../../../build/contracts/DRProgram.json';
 
 @Injectable()
 export class BlockchainService {
-  public kwhAddress = '0xf0d8e0f9672dc86eb1d350b0b1b969f20cbc6c5a';
-  public DRProgramAddress = '0x6b180277375346da70bc9d16249e5d117e4ee38a';
+  public kwhAddress = '0xdfefb183451308284d8842768b60bf491c1a46b3';
+  public DRProgramAddress = '0xd3849f4b57a0d5ce0fc6a4edac0633042cb1d367';
 
   public currentBalance = 0;
   public symbol: string;
